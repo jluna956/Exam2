@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Larpmax</title>
+    <link rel="stylesheet" href="/css/styles.css">   
+</head>
+<body>
+<header class="site-header">
+<div class="container nav-bar">
+    <a href="/" class="logo">Larpmax</a>
+    <nav class="nav-links">
+        <!-- checks what page the user is on and adds the active class to the corresponding link -->
+        <a href="/" class="<%= locals.active === 'home' ? 'active' : '' %>">Home</a>
+        <a href="/browse" class="<%= locals.active === 'browse' ? 'active' : '' %>">Browse</a>
+        <!-- checks if user is logged in and if they are an admin, then shows the admin link -->
+        <% if (locals.currentUser) { %>
+            <a href="/list" class="<%= locals.active === 'list' ? 'active' : '' %>">My List</a>
+
+            <% if (currentUser.role === "admin") { %>
+                <a href="/admin" class="<%= locals.active === 'admin' ? 'active' : '' %>">Admin</a>
+            <% } %>
+            <form action="/logout" method="POST" class="inline-form">
+                <button type="submit" class="btn btn-outline">Log out</button>
+            </form>
+        <% } else { %>
+            <!-- else then user is not logged in, show the login button -->
+        <a href="/login" class="btn">Log in</a>
+        <% } %>
+    </nav>
+</div>
+</header>
+<main class="container page">

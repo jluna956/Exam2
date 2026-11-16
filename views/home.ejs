@@ -1,0 +1,25 @@
+<!-- home page, include partial to display universal headerr -->
+<%- include("partials/header") %>
+
+<section class="hero">
+<div class="hero-text">
+    <p class="eyebrow">LARP · REVIEW · TRACK</p>
+    <h1>Everything you've read, heard and watched, on one shelf.</h1>
+    <p class="lead">Larp and review books, albums and movies, and keep a personal list of what you want to experience next.</p>
+    <div class="actions">
+    <a href="/browse" class="btn">Browse the catalog</a>
+    <!-- if user is not logged in, show the create account button -->
+    <% if (!locals.currentUser) { %>
+        <a href="/login" class="btn btn-outline">Create an account</a>
+    <% } %>
+    </div>
+    </div>
+    <div class="type-tiles">
+    <!-- display the three types of media that can be browsed, books, albums and movies -->
+    <a href="/browse?type=Book" class="tile tile-book"><strong>Books</strong><span>Novels, memoirs, nonfiction</span></a>
+    <a href="/browse?type=Album" class="tile tile-album"><strong>Albums</strong><span>Every genre and decade</span></a>
+    <a href="/browse?type=Movie" class="tile tile-movie"><strong>Movies</strong><span>Classics to new releases</span></a>
+</div>
+</section>
+<!-- include the footer partial to include the footer content -->
+<%- include("partials/footer") %>

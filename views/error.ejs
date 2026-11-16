@@ -1,0 +1,8 @@
+<!-- simple error page when users request a page that doesn't exist or an error occurs -->
+<!-- includes back to home button-->
+<%- include("partials/header") %>
+
+<h1><%= locals.status === 404 ? "Page not found" : "Something went wrong" %></h1>
+<a href="/" class="btn">Back to home</a>
+
+<%- include("partials/footer") %>
