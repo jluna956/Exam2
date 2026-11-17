@@ -37,6 +37,19 @@ export async function registerUser({ username, password, email } = {}){
     const name = (username || '').trim();
     const emailAddress = (email || '').trim().toLowerCase();
 
+    // rule 1: every field is required
+    if(!name || !emailAddress || !password){
+        throw httpError(400, "Please fill in every field.");
+    }
+    // rule 2: passwords need at least 8 characters
+    if(password.length < 8){
+        throw httpError(400, "Password must be at least 8 characters.");
+    }
+    // rule 3: one account per email
+    if(users.some(u => u.email === emailAddress)){
+        throw httpError(409, "An account with that email already exists.");
+    }
+
     const passwordHash = await bcrypt.hash(password, saltRounds);
     const user = new User({ id: nextUserId++, username: name, passwordHash, email: emailAddress });
     users.push(user);
