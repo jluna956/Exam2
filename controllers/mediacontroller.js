@@ -1,5 +1,8 @@
 
 import { getTopRated, getItems, getItemById, media_types } from "../services/mediaservice.js";
+import { getReviewsForItem } from "../services/reviewservice.js";
+import { getEntryForItem, LIST_STATUSES } from "../services/listservice.js";
+
 
 export function home(req, res, next) {
     try {
@@ -28,11 +31,17 @@ export function browse(req, res, next) {
 export function show(req, res, next) {
     try {
         const item = getItemById(req.params.id); // throws a 404 if the item doesn't exist
+        const reviews = getReviewsForItem(item.id);
+        const user = req.session.user;
+
         res.render('item', {
             title: item.title,
             active: 'browse',
             item,
-            reviews: [],
+            reviews,
+            userReview: user ? reviews.find(r => r.userId === user.id) || null : null,
+            listEntry: user ? getEntryForItem(user.id, item.id) : null,
+            statuses: LIST_STATUSES,
             error: req.query.error || null,
             success: req.query.success || null
         });
