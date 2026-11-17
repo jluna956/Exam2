@@ -79,15 +79,37 @@ export function getTopRated(limit = 4){
 }
 
 // rules for adding a new item
-export function addItem({type, title, creator, releaseYear, genreId}) {
+export function addItem({type, title, creator, releaseYear, genreId} = {}) {
+    //error handling
+    if (!media_types.includes(type)) {
+        throw httpError(400, "Media type must be Book, Album or Movie.");
+    }
+    if (!title || !title.trim()) {
+        throw httpError(400, "Title is required.");
+    }
+    if (!creator || !creator.trim()) {
+        throw httpError(400, "Creator is required.");
+    }
     const year = Number(releaseYear);
+    if (!Number.isInteger(year) || year < 1800 || year > new Date().getFullYear()) {
+        throw httpError(400, "Enter a valid release year.");
+    }
+
+    // the genre must exist and match the media type (no "Jazz" movies)
+    const genre = getGenresById(genreId);
+    if (!genre) {
+        throw httpError(400, "Choose a genre.");
+    }
+    if (genre.mediaType !== type) {
+        throw httpError(400, `${genre.name} is for ${genre.mediaType}s, not ${type}s.`);
+    }
     const item = new MediaItem({
         id: items.length + 1,
         type,
-        title,
-        creator,
+        title: title.trim(),
+        creator: creator.trim(),
         releaseYear: year,
-        genreId: Number(genreId)
+        genreId: genre.id
     });
     items.push(item);
     return withGenre(item);
