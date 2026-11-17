@@ -2,47 +2,95 @@
 
 <a href="/browse" class="back-link">← Back to catalog</a>
 
-<% if (locals.error) { %><div class="alert alert-error"><%= error %></div><% } %>
-<% if (locals.success) { %><div class="alert alert-success"><%= success %></div><% } %>
-
 <section class="item-detail">
     <div class="cover cover-lg" style="background: <%= item.cover %>">
         <span class="badge badge-<%= item.type.toLowerCase() %>"><%= item.type %></span>
     </div>
 
-<div class="item-info">
-    <h1 class="page-title"><%= item.title %></h1>
-    <p class="item-meta"><%= item.creator %> · <%= item.releaseYear %></p>
-    <p class="muted"><%= item.genreName %></p>
+    <div class="item-info">
+        <h1 class="page-title"><%= item.title %></h1>
+        <p class="item-meta"><%= item.creator %> · <%= item.releaseYear %></p>
+        <p class="muted"><%= item.genreName %></p>
 
-    <div class="rating-big">
-    <% if (item.ratingCount > 0) { %>
-    <span class="rating-number"><%= item.averageRating.toFixed(1) %></span>
-    <span class="muted">average from <%= item.ratingCount %> rating<%= item.ratingCount === 1 ? "" : "s" %></span>
-    <% } else { %>
-    <span class="muted">No ratings yet.</span>
-    <% } %>
+        <div class="rating-big">
+        <% if (item.ratingCount > 0) { %>
+            <span class="rating-number"><%= item.averageRating.toFixed(1) %></span>
+            <span class="muted">average from <%= item.ratingCount %> rating<%= item.ratingCount === 1 ? "" : "s" %></span>
+        <% } else { %>
+            <span class="muted">No ratings yet.</span>
+        <% } %>
+        </div>
+
+        <% if (locals.currentUser) { %>
+            <!-- list form: creates a ListEntry, or updates its status if it already exists -->
+            <form action="/items/<%= item.id %>/list" method="POST" class="list-form">
+                <div class="field">
+                    <label for="status" class="label">
+                        <% if (locals.listEntry) { %>On your list: <strong><%= listEntry.status %></strong><% } else { %>Add to My List<% } %>
+                    </label>
+                    <select id="status" name="status">
+                        <% (locals.statuses || []).forEach((s) => { %>
+                            <option value="<%= s %>" <%= locals.listEntry && listEntry.status === s ? "selected" : "" %>>
+                                <%= s === "want to" ? "Want to" : "Completed" %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+                <button type="submit" class="btn"><%= locals.listEntry ? "Update status" : "Add to list" %></button>
+            </form>
+        <% } %>
     </div>
-
-</div>
 </section>
 
 <section class="item-lower">
-<div class="panel">
-    <h2>Write a review</h2>
-    <% if (locals.currentUser) { %>
-        <p class="muted">Review form coming in Part 4.</p>
-    <% } else { %>
-        <p class="muted"><a href="/login" class="link">Log in</a> to rate, review and add this to your list.</p>
-    <% } %>
-</div>
+    <div class="panel">
+        <h2>Write a review</h2>
+        <% if (!locals.currentUser) { %>
+            <p class="muted"><a href="/login" class="link">Log in</a> to rate, review and add this to your list.</p>
+        <% } else if (locals.userReview) { %>
+            <p class="muted">You rated this <span class="stars">★ <%= userReview.rating %></span>. You can review each item once.</p>
+        <% } else { %>
+            <!-- review form: creates a Review and updates the item's average rating -->
+            <form action="/items/<%= item.id %>/reviews" method="POST" class="form-stack">
+                <div class="field">
+                    <label for="rating" class="label">Your rating</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Choose 1 to 5</option>
+                        <option value="5">5 - Loved it</option>
+                        <option value="4">4 - Really liked it</option>
+                        <option value="3">3 - It was OK</option>
+                        <option value="2">2 - Didn't like it</option>
+                        <option value="1">1 - Hated it</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="text" class="label">Your review</label>
+                    <textarea id="text" name="text" rows="5" maxlength="1000" required placeholder="What did you think?"></textarea>
+                </div>
+                <button type="submit" class="btn">Post review</button>
+            </form>
+        <% } %>
+    </div>
 
-<div>
-    <h2>Reviews (<%= reviews.length %>)</h2>
-    <% if (reviews.length === 0) { %>
-        <p class="muted">No reviews yet.</p>
-    <% } %>
-</div>
+    <div>
+        <h2>Reviews (<%= reviews.length %>)</h2>
+        <% if (reviews.length === 0) { %>
+            <p class="muted">No reviews yet. Be the first.</p>
+        <% } else { %>
+            <div class="review-list">
+                <% reviews.forEach((r) => { %>
+                    <article class="card review">
+                        <div class="review-head">
+                            <strong><%= r.username %></strong>
+                            <span class="stars">★ <%= r.rating %></span>
+                        </div>
+                        <p><%= r.text %></p>
+                        <p class="muted small"><%= r.dateLabel %></p>
+                    </article>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
 </section>
 
 <%- include("partials/footer") %>
