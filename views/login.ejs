@@ -1,0 +1,55 @@
+<%- include("partials/header") %>
+
+<h1 class="page-title center">Welcome to Larpmax</h1>
+<p class="lead center">Log in to review and keep your list, or create a free account.</p>
+
+<div class="auth-grid">
+    <!-- log in form: creates a session for an existing User -->
+    <form action="/login" method="POST" class="panel form-stack">
+        <h2>Log in</h2>
+        <% if (locals.loginError) { %>
+            <div class="alert alert-error"><%= loginError %></div>
+        <% } %>
+
+        <div class="field">
+            <label for="login-email" class="label">Email</label>
+            <input id="login-email" name="email" type="email" autocomplete="email" required
+                   value="<%= (locals.values && values.loginEmail) || '' %>">
+        </div>
+        <div class="field">
+            <label for="login-password" class="label">Password</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+
+        <button type="submit" class="btn">Log in</button>
+        <p class="muted small">Demo account: demo@example.com / demo1234</p>
+    </form>
+
+    <!-- register form: creates a new User object -->
+    <form action="/register" method="POST" class="panel form-stack">
+        <h2>Create an account</h2>
+        <% if (locals.registerError) { %>
+            <div class="alert alert-error"><%= registerError %></div>
+        <% } %>
+
+        <div class="field">
+            <label for="reg-username" class="label">Username</label>
+            <input id="reg-username" name="username" type="text" autocomplete="username" required
+                   value="<%= (locals.values && values.username) || '' %>">
+        </div>
+        <div class="field">
+            <label for="reg-email" class="label">Email</label>
+            <input id="reg-email" name="email" type="email" autocomplete="email" required
+                   value="<%= (locals.values && values.email) || '' %>">
+        </div>
+        <div class="field">
+            <label for="reg-password" class="label">Password</label>
+            <input id="reg-password" name="password" type="password" autocomplete="new-password" required minlength="8" aria-describedby="pw-hint">
+            <span id="pw-hint" class="muted small">At least 8 characters</span>
+        </div>
+
+        <button type="submit" class="btn btn-outline">Create account</button>
+    </form>
+</div>
+
+<%- include("partials/footer") %>
