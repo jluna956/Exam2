@@ -1,0 +1,83 @@
+<%- include("partials/header") %>
+
+<h1 class="page-title">Admin</h1>
+<p class="lead">Add catalog items and view registered users. Only admins can open this page.</p>
+
+<% if (locals.error) { %><div class="alert alert-error"><%= error %></div><% } %>
+<% if (locals.success) { %><div class="alert alert-success"><%= success %></div><% } %>
+
+<div class="admin-grid">
+    <!-- add item form: creates a new MediaItem linked to a Genre -->
+    <form action="/admin/items" method="POST" class="panel form-stack">
+        <h2>Add a catalog item</h2>
+
+        <div class="field">
+            <label for="title" class="label">Title</label>
+            <input id="title" name="title" type="text" required>
+        </div>
+
+        <div class="form-row">
+            <div class="field">
+                <label for="type" class="label">Media type</label>
+                <select id="type" name="type" required>
+                    <% types.forEach((t) => { %>
+                        <option value="<%= t %>"><%= t %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="field">
+                <label for="genreId" class="label">Genre</label>
+                <select id="genreId" name="genreId" required>
+                    <option value="">Choose a genre</option>
+                    <% types.forEach((t) => { %>
+                        <optgroup label="<%= t %>s">
+                            <% genres.filter((g) => g.mediaType === t).forEach((g) => { %>
+                                <option value="<%= g.id %>"><%= g.name %></option>
+                            <% }) %>
+                        </optgroup>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="field">
+                <label for="creator" class="label">Creator (author, artist or director)</label>
+                <input id="creator" name="creator" type="text" required>
+            </div>
+            <div class="field">
+                <label for="releaseYear" class="label">Release year</label>
+                <input id="releaseYear" name="releaseYear" type="number" min="1800" max="2026" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Add item</button>
+    </form>
+
+    <!-- users table: every registered User (no passwords) -->
+    <div>
+        <h2>Registered users (<%= users.length %>)</h2>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach((u) => { %>
+                        <tr>
+                            <td><strong><%= u.username %></strong></td>
+                            <td class="muted"><%= u.email %></td>
+                            <td><span class="status <%= u.role === 'admin' ? 'status-want' : 'status-done' %>"><%= u.role %></span></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%- include("partials/footer") %>

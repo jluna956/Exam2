@@ -1,4 +1,4 @@
-import {saveListEntry} from '../services/listservice.js';
+import {saveListEntry, getListForUser} from '../services/listservice.js';
 
 export function savetoList(req, res, next) {
     const itemId = req.params.id;
@@ -15,3 +15,13 @@ export function savetoList(req, res, next) {
         next(error);
     }
 }
+
+export function showList(req, res, next) {
+    try {
+        const entries = getListForUser(req.session.user.id);
+        res.render('mylist', { title: 'My List', active: 'list', entries });
+    } catch (err) {
+        next(err);
+    }
+}
+

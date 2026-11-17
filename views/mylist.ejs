@@ -1,0 +1,45 @@
+<%- include("partials/header") %>
+
+<div class="section-head">
+    <div>
+        <h1 class="page-title">My List</h1>
+        <p class="muted">Signed in as <%= currentUser.username %>. Change a status from any item page.</p>
+    </div>
+    <a href="/browse" class="btn">Find something new</a>
+</div>
+
+<% if (entries.length === 0) { %>
+    <div class="empty">Your list is empty. <a href="/browse" class="link">Browse the catalog</a> and add something.</div>
+<% } else { %>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Added</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% entries.forEach((e) => { %>
+                    <tr>
+                        <td>
+                            <a href="/items/<%= e.item.id %>" class="link"><%= e.item.title %></a>
+                            <div class="muted small"><%= e.item.creator %></div>
+                        </td>
+                        <td><span class="badge badge-<%= e.item.type.toLowerCase() %>"><%= e.item.type %></span></td>
+                        <td>
+                            <span class="status <%= e.status === 'completed' ? 'status-done' : 'status-want' %>">
+                                <%= e.status === 'completed' ? 'Completed' : 'Want to' %>
+                            </span>
+                        </td>
+                        <td class="muted"><%= e.dateLabel %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+<% } %>
+
+<%- include("partials/footer") %>

@@ -28,7 +28,7 @@ export async function login(req, res, next) {
         req.session.user = { id: user.id, username: user.username, role: user.role };
         res.redirect('/');
     } catch (err) {
-        // rule failures (401) show on the form; anything else goes to the error handler
+        
         if (err.status && err.status < 500) {
             return renderLogin(res, err.status, {
                 loginError: err.message,

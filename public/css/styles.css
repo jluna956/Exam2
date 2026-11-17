@@ -132,3 +132,25 @@ textarea { width: 100%; resize: vertical; }
 .review-head { display: flex; justify-content: space-between; gap: 12px; }
 .review p { margin: 10px 0 0; color: #D9D1C2; line-height: 1.55; }
 .review .muted { color: var(--muted); margin-top: 8px; }
+
+/* Tables (My List and Admin) */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-top: 24px; }
+.data-table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 15px; }
+.data-table th { text-align: left; font-size: 13px; font-weight: 600; color: var(--muted); padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.data-table td { padding: 14px 18px; border-bottom: 1px solid #2A2520; vertical-align: top; }
+.data-table tr:last-child td { border-bottom: 0; }
+
+/* Status pills */
+.status { display: inline-block; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+.status-want { background: #3A2E17; color: var(--accent); }
+.status-done { background: #1F3324; color: #A9DDB3; }
+
+/* Empty state */
+.empty { background: var(--surface); border: 1px dashed var(--border); border-radius: 12px; padding: 32px; text-align: center; color: var(--muted); margin-top: 24px; }
+
+/* Admin page layout */
+.admin-grid { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; margin-top: 24px; }
+.admin-grid > * { flex: 1 1 420px; min-width: 0; }
+.admin-grid .table-wrap { margin-top: 0; }
+.form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
