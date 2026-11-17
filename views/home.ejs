@@ -21,5 +21,18 @@
     <a href="/browse?type=Movie" class="tile tile-movie"><strong>Movies</strong><span>Classics to new releases</span></a>
 </div>
 </section>
+
+<section class="section">
+    <div class="section-head">
+        <h2>Top rated</h2>
+        <a href="/browse" class="link">See all</a>
+    </div>
+    <div class="grid">
+    <% (locals.topRated || []).forEach((item) => { %>
+        <%- include("partials/itemcard", { item }) %>
+    <% }) %>
+    </div>
+</section>
+
 <!-- include the footer partial to include the footer content -->
 <%- include("partials/footer") %>

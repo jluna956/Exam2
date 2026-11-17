@@ -1,0 +1,21 @@
+<%- include("partials/header") %>
+
+<h1 class="page-title">Browse the catalog</h1>
+<p class="lead">Filter by media type. Every card shows the item's average rating.</p>
+
+<nav class="type-filter" aria-label="Filter by media type">
+    <a href="/browse" class="pill <%= !currentType ? 'pill-active' : '' %>">All</a>
+    <% types.forEach((t) => { %>
+        <a href="/browse?type=<%= t %>" class="pill <%= currentType === t ? 'pill-active' : '' %>"><%= t %>s</a>
+    <% }) %>
+</nav>
+
+<p class="muted small">Showing <%= items.length %> item<%= items.length === 1 ? "" : "s" %></p>
+
+<div class="grid">
+    <% items.forEach((item) => { %>
+        <%- include("partials/itemcard", { item }) %>
+    <% }) %>
+</div>
+
+<%- include("partials/footer") %>

@@ -3,6 +3,7 @@
 <%- include("partials/header") %>
 
 <h1><%= locals.status === 404 ? "Page not found" : "Something went wrong" %></h1>
+<p class="lead"><%= locals.message || "" %></p>
 <a href="/" class="btn">Back to home</a>
 
 <%- include("partials/footer") %>

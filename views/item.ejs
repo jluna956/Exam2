@@ -1,0 +1,48 @@
+<%- include("partials/header") %>
+
+<a href="/browse" class="back-link">← Back to catalog</a>
+
+<% if (locals.error) { %><div class="alert alert-error"><%= error %></div><% } %>
+<% if (locals.success) { %><div class="alert alert-success"><%= success %></div><% } %>
+
+<section class="item-detail">
+    <div class="cover cover-lg" style="background: <%= item.cover %>">
+        <span class="badge badge-<%= item.type.toLowerCase() %>"><%= item.type %></span>
+    </div>
+
+<div class="item-info">
+    <h1 class="page-title"><%= item.title %></h1>
+    <p class="item-meta"><%= item.creator %> · <%= item.releaseYear %></p>
+    <p class="muted"><%= item.genreName %></p>
+
+    <div class="rating-big">
+    <% if (item.ratingCount > 0) { %>
+    <span class="rating-number"><%= item.averageRating.toFixed(1) %></span>
+    <span class="muted">average from <%= item.ratingCount %> rating<%= item.ratingCount === 1 ? "" : "s" %></span>
+    <% } else { %>
+    <span class="muted">No ratings yet.</span>
+    <% } %>
+    </div>
+
+</div>
+</section>
+
+<section class="item-lower">
+<div class="panel">
+    <h2>Write a review</h2>
+    <% if (locals.currentUser) { %>
+        <p class="muted">Review form coming in Part 4.</p>
+    <% } else { %>
+        <p class="muted"><a href="/login" class="link">Log in</a> to rate, review and add this to your list.</p>
+    <% } %>
+</div>
+
+<div>
+    <h2>Reviews (<%= reviews.length %>)</h2>
+    <% if (reviews.length === 0) { %>
+        <p class="muted">No reviews yet.</p>
+    <% } %>
+</div>
+</section>
+
+<%- include("partials/footer") %>
