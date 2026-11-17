@@ -4,6 +4,7 @@ import session from 'express-session';
 
 
 import mediaRoutes from './routes/mediaroutes.js';
+import authRoutes from './routes/authroutes.js';
 import { notFound, errorHandler } from './middleware/errorhandler.js';
 
 
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', mediaRoutes);
+app.use('/', authRoutes);
 
 // error handling: always last
 app.use(notFound);
